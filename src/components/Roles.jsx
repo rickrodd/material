@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { TextField, Button, Box, Dialog, DialogActions, DialogContent, DialogTitle, Autocomplete, IconButton, Typography } from '@mui/material';
+import { TextField, Button, Box, Dialog, DialogActions, DialogContent, DialogTitle, Autocomplete, IconButton, Typography, Switch } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import PeopleIcon from '@mui/icons-material/People';
 import InfoIcon from '@mui/icons-material/Info';
@@ -53,6 +53,11 @@ const Roles = () => {
     const [textValue, setTextValue] = useState('');
     const [selectedPeople, setSelectedPeople] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [editMode, setEditMode] = useState('false');
+
+    const handleEditMode = (e) => {
+        setEditMode(e.target.checked)
+    }
 
     const handleRowSelection = (newSelection) => {
         setSelectedRows(newSelection);
@@ -118,7 +123,7 @@ const Roles = () => {
 
     const columns = columnConfig.map(({ field, headerName, type }) => ({
         field,
-        editable: type === 'people' ? false : true,
+        editable: editMode ? type === 'people' ? false : true : false,
         headerName,
         width: 250,
         sortable: false,
@@ -131,7 +136,7 @@ const Roles = () => {
                 {/* {type === 'people' && <PeopleIcon sx={{ marginRight: 1 }} fontSize="medium" />} */}
                 {/* {type === 'text' && <InfoIcon sx={{ marginRight: 1 }} fontSize="small" />} */}
                 <Typography variant='h6'>{params.colDef.headerName}</Typography>
-                {type !== 'readonly' && (
+                {type !== 'readonly' && editMode && (
                     <IconButton
                         onClick={() => openEditDialog(field, type)}
                         disabled={selectedRows.length === 0}
@@ -146,7 +151,7 @@ const Roles = () => {
     }));
 
     return (
-        <Box style={{ padding: '8px', height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <Box gap={1} style={{ padding: '8px', height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', width: '100%' }}>
             {/* <Box display="flex" alignItems="center" mb={2} gap={2}> */}
             {/* <SearchIcon /> */}
             <TextField
@@ -157,14 +162,17 @@ const Roles = () => {
                 size="small"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                sx={{ marginBottom: 2, maxWidth: 500 }}
+                sx={{ maxWidth: 500 }}
             />
             {/* </Box> */}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant='h6'>Edit</Typography><Switch onChange={handleEditMode} />                
+                </Box>
 
             <DataGrid
                 rows={filteredData}
                 columns={columns}
-                checkboxSelection
+                checkboxSelection={editMode}
                 disableRowSelectionOnClick
                 onRowSelectionModelChange={handleRowSelection}
                 slots={{ toolbar: GridToolbar }}
