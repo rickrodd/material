@@ -53,10 +53,11 @@ const Roles = () => {
     const [textValue, setTextValue] = useState('');
     const [selectedPeople, setSelectedPeople] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [editMode, setEditMode] = useState('false');
+    const [editMode, setEditMode] = useState(false);
 
     const handleEditMode = (e) => {
         setEditMode(e.target.checked)
+        setSelectedRows([])
     }
 
     const handleRowSelection = (newSelection) => {
@@ -174,6 +175,7 @@ const Roles = () => {
                 columns={columns}
                 checkboxSelection={editMode}
                 disableRowSelectionOnClick
+                rowSelectionModel={selectedRows}
                 onRowSelectionModelChange={handleRowSelection}
                 slots={{ toolbar: GridToolbar }}
                 hideFooter
