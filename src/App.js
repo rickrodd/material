@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Add from "./components/Add";
 import { useState } from "react";
 import Roles from "./components/Roles";
+import CommentBox from "./components/CommentBox";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -18,7 +19,8 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <Box bgcolor={"background.default"} color={"text.primary"}>
-        <Roles />
+        {/* <Roles /> */}
+        <CommentBox />
         {/* <Stack direction="row" spacing={2} justifyContent="space-between">
         <Sidebar setMode={setMode} mode={mode}/>
           <Feed />
